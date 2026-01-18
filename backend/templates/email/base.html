@@ -1,0 +1,162 @@
+<!doctype html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>{{ headline|default:"Update" }}</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 40px 20px;
+      background: #f0f0f0;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+      color: #333;
+      -webkit-font-smoothing: antialiased;
+      line-height: 1.6;
+    }
+
+    .wrapper {
+      max-width: 600px;
+      margin: 0 auto;
+      background: #ffffff;
+      border-radius: 4px;
+      overflow: hidden;
+    }
+
+    .header {
+      background: #22c55e;
+      padding: 20px 32px;
+    }
+
+    .header-content {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .brand-logo {
+      height: 40px;
+      width: 40px;
+      border-radius: 50%;
+      object-fit: cover;
+    }
+
+    .brand-title {
+      font-size: 18px;
+      font-weight: 600;
+      color: #ffffff;
+      margin: 0;
+      letter-spacing: 0.5px;
+    }
+
+    .content {
+      padding: 32px;
+      background: #ffffff;
+    }
+
+    .headline {
+      font-size: 18px;
+      font-weight: 600;
+      margin: 0 0 20px;
+      color: #1a1a1a;
+      padding-bottom: 16px;
+      border-bottom: 1px solid #e5e5e5;
+    }
+
+    .body-copy {
+      color: #4a4a4a;
+      font-size: 15px;
+      line-height: 1.7;
+    }
+
+    .body-copy p {
+      margin: 0 0 14px;
+    }
+
+    .signature {
+      margin-top: 24px;
+      color: #666;
+      font-size: 14px;
+    }
+
+    .signature-name {
+      font-weight: 600;
+      color: #1a1a1a;
+    }
+
+    .footer {
+      padding: 20px 32px;
+      text-align: center;
+      color: #888;
+      font-size: 12px;
+      background: #fafafa;
+      border-top: 1px solid #eee;
+    }
+
+    @media (max-width: 480px) {
+      body {
+        padding: 20px 10px;
+      }
+
+      .content,
+      .header,
+      .footer {
+        padding-left: 20px;
+        padding-right: 20px;
+      }
+
+      .headline {
+        font-size: 16px;
+      }
+
+      .header-content {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 8px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="wrapper">
+    <!-- Header with brand -->
+    <div class="header">
+      <div class="header-content">
+        {% if business_logo %}
+        <img src="{{ business_logo }}" alt="{{ business_name }}" class="brand-logo">
+        {% endif %}
+        <div class="brand-title">{{ business_name|default:"SafariDesk" }}</div>
+      </div>
+    </div>
+
+    <!-- Content -->
+    <div class="content">
+      {% if headline %}
+      <h1 class="headline">{{ headline }}</h1>
+      {% endif %}
+
+      <div class="body-copy">
+        {{ body_html|safe }}
+      </div>
+
+      {% if signature_name %}
+      <div class="signature">
+        <p>{{ signature_greeting|default:"Regards," }}</p>
+        <p class="signature-name">{{ signature_name }}</p>
+      </div>
+      {% endif %}
+    </div>
+
+    <!-- Footer -->
+    <div class="footer">
+      {% if support_text %}
+      <p>{{ support_text }}</p>
+      {% endif %}
+      <p>&copy; {{ business_name|default:"SafariDesk" }}</p>
+    </div>
+  </div>
+</body>
+
+</html>

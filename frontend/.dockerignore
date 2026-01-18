@@ -1,0 +1,23 @@
+# Note: .env.local is NOT ignored here
+# Local Docker builds will copy it (localhost URLs)
+# CI builds won't have it (gitignored) and will use .env.development
+
+# Node modules (will be installed inside Docker)
+node_modules
+
+# Git files
+.git
+.gitignore
+
+# IDE files
+.vscode
+.idea
+
+# Build output (will be built inside Docker)
+dist
+
+# Logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*

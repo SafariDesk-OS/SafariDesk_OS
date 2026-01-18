@@ -1,0 +1,67 @@
+# Environment
+.env
+.env.local
+.env.*.local
+.env.backup
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+venv/
+.venv/
+*.egg-info/
+.eggs/
+dist/
+build/
+
+# Node
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.pnpm-debug.log*
+
+# Next.js (docs)
+.next/
+out/
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+.DS_Store
+
+# Logs
+*.log
+logs/
+
+# Database
+*.sqlite3
+
+# Media uploads
+backend/media/
+/mnt/
+
+# Static files
+backend/staticfiles/
+
+# Coverage
+.coverage
+htmlcov/
+
+# Celery
+celerybeat-schedule
+celerybeat.pid
+
+# Docker
+docker-compose.override.yml
+
+# Old folders (delete after migration)
+sd-backend/
+sd-frontend/

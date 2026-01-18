@@ -1,0 +1,110 @@
+services:
+  web:
+    container_name: safaridesk_dev_api
+    image: registry.safaridesk.io:5443/safaridesk-backend:dev-latest
+    command: >
+      sh -c "python manage.py collectstatic --noinput &&
+             python manage.py install_pgvector &&
+             python manage.py migrate --noinput &&
+             python manage.py safari &&
+             gunicorn RNSafarideskBack.wsgi:application --bind 0.0.0.0:8100 --workers 3"
+    env_file:
+      - .prod.env
+    volumes:
+      - dev_gunicorn_logs:/var/log/gunicorn
+      - dev_safari:/mnt
+    ports:
+      - "7001:8100"
+    depends_on:
+      db:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    restart: always
+
+  celery:
+    container_name: safaridesk_dev_celery
+    image: registry.safaridesk.io:5443/safaridesk-backend:dev-latest
+    command: celery -A RNSafarideskBack.celery worker --loglevel=info --concurrency=2
+    env_file:
+      - .prod.env
+    volumes:
+      - dev_celery_logs:/var/log/celery
+      - dev_safari:/mnt
+    depends_on:
+      redis:
+        condition: service_healthy
+      db:
+        condition: service_healthy
+    restart: always
+
+  celery-beat:
+    container_name: safaridesk_dev_celery_beat
+    image: registry.safaridesk.io:5443/safaridesk-backend:dev-latest
+    command: celery -A RNSafarideskBack.celery beat --loglevel=info
+    env_file:
+      - .env
+    volumes:
+      - dev_celery_logs:/var/log/celery
+      - dev_safari:/mnt
+    depends_on:
+      redis:
+        condition: service_healthy
+      db:
+        condition: service_healthy
+    restart: always
+
+  channels:
+    container_name: safaridesk_dev_channels
+    image: registry.safaridesk.io:5443/safaridesk-backend:dev-latest
+    command: daphne -b 0.0.0.0 -p 8101 RNSafarideskBack.asgi:application
+    env_file:
+      - .env
+    volumes:
+      - dev_safari:/mnt
+    ports:
+      - "7101:8101"
+    depends_on:
+      redis:
+        condition: service_healthy
+      db:
+        condition: service_healthy
+    restart: always
+
+  redis:
+    container_name: safaridesk_dev_redis
+    image: redis:7
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+    ports:
+      - "6380:6379"
+    volumes:
+      - dev_redisdata:/data
+    restart: always
+
+  db:
+    container_name: safaridesk_dev_db
+    image: pgvector/pgvector:pg16
+    env_file:
+      - .env
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${DB_USER:-postgres}"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+      start_period: 5s
+    ports:
+      - "5433:5432"
+    volumes:
+      - dev_postgresdata:/var/lib/postgresql/data
+    restart: always
+
+volumes:
+  dev_postgresdata:
+  dev_redisdata:
+  dev_gunicorn_logs:
+  dev_celery_logs:
+  dev_safari:
