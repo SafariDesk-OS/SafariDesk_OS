@@ -23,11 +23,11 @@ docker compose up -d
 
 ## Documentation
 
-Full documentation: [docs.safaridesk.io](https://docs.safaridesk.io)
+Full documentation: [docs.safaridesk.io](https://docs.safaridesk.io/docs)
 
-- [Installation](https://docs.safaridesk.io/getting-started/installation)
-- [Configuration](https://docs.safaridesk.io/getting-started/configuration)
-- [Features](https://docs.safaridesk.io/features)
+- [Installation](https://docs.safaridesk.io/docs/installation)
+- [Configuration](https://docs.safaridesk.io/docs/configuration)
+- [Features](https://docs.safaridesk.io/docs/features)
 
 ## Stack
 
