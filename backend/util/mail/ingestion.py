@@ -743,7 +743,7 @@ class MailIngestionCoordinator:
         integrations = (
             MailIntegration.objects.filter(is_active=True)
             .exclude(provider__in=exclude_providers)
-            .select_related("department", "business")
+            .select_related("department")
         )
         for integration in integrations:
             service = MailIntegrationIngestionService(integration)
